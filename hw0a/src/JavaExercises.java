@@ -12,15 +12,33 @@ public class JavaExercises {
      * The first row contains 1 star, the second 2 stars, and so on.
      */
     public static void starTriangle() {
-        // TODO: Fill in this function
+        for (int i=0;i<5;i++)
+        {
+            for (int j=0;j<4-i;j++){
+                System.out.print(" ");
+            }
+            for(int j=0;j<=i;j++)
+            {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
     }
+
 
     /**
      * Prints each character of a given string followed by its reverse index.
      * Example: printIndexed("hello") -> h4e3l2l1o0
      */
     public static void printIndexed(String s) {
-        // TODO: Fill in this function
+        int num = s.length();
+        for(int i=0;i<num;i++)
+        {
+            char letter = s.charAt(i);
+            System.out.print(letter);
+            System.out.print(num-1-i);
+        }
+
     }
 
     /**
@@ -28,8 +46,14 @@ public class JavaExercises {
      * Example: stutter("hello") -> "hheelllloo"
      */
     public static String stutter(String s) {
-        // TODO: Fill in this function
-        return null;
+        int num = s.length();
+        String t = "";
+        for(int i=0;i<num;i++)
+        {
+            char letter = s.charAt(i);
+            t = t + letter + letter;
+        }
+        return t;
     }
 
     /**
@@ -42,7 +66,13 @@ public class JavaExercises {
      *   0 if the point lies on an axis.
      */
     public static int quadrant(int x, int y) {
-        // TODO: Fill in this function
+        if (x > 0 && y > 0){return 1;} else if (x < 0 && y > 0) {return 2;
+
+        } else if (x < 0 && y <0) { return 3;
+
+        } else if (x > 0 && y < 0) { return 4;
+
+        } else
         return 0;
     }
 
