@@ -19,13 +19,16 @@ public class GameLogic {
      *              if no merge occurs, then return 0.
      */
     public static int moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR) {
-        //TODO:fill this in ...
         int value = board[r][c];
-        // 如果 tile 已经在 minR 或更小的行，不能移动
-        if (r < minR) {
+        // 如果 tile 值为 0（空 tile），不需要移动
+        if (value == 0) {
             return 0;
         }
-        board[r][c] = 0;
+        // 如果 tile 已经在 minR 或更小的行，不能移动
+        if (r <= minR) {
+            return 0;
+        }
+        
         int targetRow = r; // 默认目标位置是原位置（如果不能移动）
         for (int i = r - 1; i >= minR; i--) {
             if (board[i][c] == 0) {
@@ -33,6 +36,7 @@ public class GameLogic {
                 targetRow = i;
             } else if (board[i][c] == value) {
                 // 遇到相同值的 tile，可以合并
+                board[r][c] = 0; // 清空原位置
                 board[i][c] = value * 2; // 合并
                 return 1 + i; // 返回 1 + 合并发生的行号
             } else {
@@ -41,7 +45,13 @@ public class GameLogic {
                 break;
             }
         }
-        board[targetRow][c] = value;
+        
+        // 只有当目标位置与原位置不同时才移动
+        if (targetRow != r) {
+            board[r][c] = 0; // 清空原位置
+            board[targetRow][c] = value; // 移动到目标位置
+        }
+        // 如果 targetRow == r，tile 不需要移动，不需要修改 board
         return 0; // 没有合并
     }
 
@@ -57,7 +67,10 @@ public class GameLogic {
         int minR = 0;
         for (int i=0;i<rows;i+=1)
         {
-            minR=moveTileUpAsFarAsPossible(board,i,c,minR);
+            int result = moveTileUpAsFarAsPossible(board,i,c,minR);
+            if (result > 0) {
+                minR = result;
+            }
         }
         return;
 
