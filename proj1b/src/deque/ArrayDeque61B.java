@@ -1,7 +1,7 @@
 package deque;
 
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque61B<T> implements Deque61B<T> {
@@ -31,7 +31,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     }
     public void small(){
         if((double) size /deque.length<=0.25 && deque.length>=16){
-            T[] new_deque = (T [])(new Object[size/2]);
+            T[] new_deque = (T [])(new Object[deque.length/2]);
             for(int i=0;i<size;i++)
             {
                 new_deque[i] = get(i);
@@ -125,5 +125,62 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     @Override
     public T getRecursive(int index) {
         throw new UnsupportedOperationException("No need to implement getRecursive for proj1b");
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+    private class ArrayDequeIterator implements Iterator<T>{
+        private int wizPos;
+        public ArrayDequeIterator(){
+           wizPos=0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return wizPos<size;
+        }
+
+        @Override
+        public T next() {
+            T returnitem = get(wizPos);
+            wizPos +=1;
+            return returnitem;
+        }
+    }
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Deque61B)) {
+            return false;
+        }
+        Deque61B<?> other = (Deque61B<?>) obj;
+        if (size != other.size())
+        {
+            return false;
+        }
+        for(int i=0;i<size;i++)
+        {
+            T thisItem = get(i);
+            Object otherItem = other.get(i);
+            if (thisItem == null && otherItem != null) {
+                return false;
+            }
+            if (thisItem != null && !thisItem.equals(otherItem)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return toList().toString();
     }
 }

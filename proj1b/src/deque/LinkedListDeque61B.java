@@ -1,10 +1,30 @@
 package deque;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
 public class LinkedListDeque61B<T> implements Deque61B<T>{
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+    private class LinkedListDequeIterator implements Iterator<T>{
+        private int wizPos;
+        public LinkedListDequeIterator(){
+            wizPos = 0;
+        }
+        public boolean hasNext(){
+            return wizPos<size;
+        }
+        public T next(){
+            T returnItem = get(wizPos);
+            wizPos+=1;
+            return returnItem;
+        }
+    }
+
     private class Node{
         Node prev;
         T point;
@@ -66,18 +86,28 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
 
     @Override
     public T removeFirst() {
+        if (isEmpty()){
+            return null;
+        }
+        else{
+        size-=1;
         T x=sentinel.next.point;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
-        return x;
+        return x;}
     }
 
     @Override
     public T removeLast() {
+        if (isEmpty()){
+            return null;
+        }
+        else{
+        size-=1;
         T x = sentinel.prev.point;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
-        return x;
+        return x;}
     }
 
     @Override
@@ -112,5 +142,38 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
             return current.point;
         }
         return getRecursiveHelper(current.next, index - 1);
+    }
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Deque61B)) {
+            return false;
+        }
+        Deque61B<?> other = (Deque61B<?>) obj;
+        if (size != other.size())
+        {
+            return false;
+        }
+        for(int i=0;i<size;i++)
+        {
+            T thisItem = get(i);
+            Object otherItem = other.get(i);
+            if (thisItem == null && otherItem != null) {
+                return false;
+            }
+            if (thisItem != null && !thisItem.equals(otherItem)){
+                return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public String toString(){
+        return toList().toString();
     }
 }

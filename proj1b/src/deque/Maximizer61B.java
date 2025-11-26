@@ -1,7 +1,8 @@
 package deque;
+import java.util.ArrayDeque;
 import java.util.Comparator;
 
-public class Maximizer61B {
+public class Maximizer61B<T> {
     /**
      * Returns the maximum element from the given iterable of comparables.
      * You may assume that the iterable contains no nulls.
@@ -10,7 +11,16 @@ public class Maximizer61B {
      * @return          the maximum element
      */
     public static <T extends Comparable<T>> T max(Iterable<T> iterable) {
-        return null;
+        if (!iterable.iterator().hasNext()) {
+            return null;
+        }
+        T returnmax = iterable.iterator().next();
+        for (T s : iterable) {
+            if (s.compareTo(returnmax) > 0) {
+                returnmax = s;
+            }
+        }
+        return returnmax;
     }
 
     /**
@@ -22,17 +32,26 @@ public class Maximizer61B {
      * @return          the maximum element according to the comparator
      */
     public static <T> T max(Iterable<T> iterable, Comparator<T> comp) {
-        return null;
+        if (!iterable.iterator().hasNext()) {
+            return null;
+        }
+        T returnmax = iterable.iterator().next();
+        for (T s : iterable) {
+            if (comp.compare(s, returnmax) > 0) {
+                returnmax = s;
+            }
+        }
+        return returnmax;
     }
 
     public static void main(String[] args) {
         // The style checker will complain about this main method, feel free to delete.
 
-        // ArrayDeque61B<Integer> ad = new ArrayDeque61B<>();
-        // ad.addLast(5);
-        // ad.addLast(12);
-        // ad.addLast(17);
-        // ad.addLast(23);
-        // System.out.println(max(ad));
+         ArrayDeque61B<Integer> ad = new ArrayDeque61B<>();
+         ad.addLast(5);
+         ad.addLast(12);
+         ad.addLast(17);
+         ad.addLast(23);
+         System.out.println(max(ad));
     }
 }
