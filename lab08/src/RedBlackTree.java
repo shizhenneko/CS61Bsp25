@@ -50,7 +50,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @param node
      */
     void flipColors(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -61,8 +63,14 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> next_node = node.left;
+        RBTreeNode<T> left_child_of_node = next_node.right;
+        next_node.right = node;
+        node.left = left_child_of_node;
+        boolean tempColor = node.isBlack;
+        node.isBlack = next_node.isBlack;
+        next_node.isBlack = tempColor;
+        return next_node;
     }
 
     /**
@@ -73,8 +81,14 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> next_node = node.right;
+        RBTreeNode<T> right_child_of_node = next_node.left;
+        next_node.left = node;
+        node.right = right_child_of_node;
+        boolean tempColor = node.isBlack;
+        node.isBlack = next_node.isBlack;
+        next_node.isBlack = tempColor;
+        return next_node;
     }
 
     /**
@@ -106,16 +120,33 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     private RBTreeNode<T> insertHelper(RBTreeNode<T> node, T item) {
         // TODO: Insert (return) new red leaf node.
-
+        if(node == null){
+           return new RBTreeNode<>(false,item);
+        }
+        else if(item.compareTo(node.item)<0){
+                node.left = insertHelper(node.left,item);
+        }
+        else{
+                node.right = insertHelper(node.right,item);
+        }
         // TODO: Handle normal binary search tree insertion.
 
         // TODO: Rotate left operation
+        if (isRed(node.right) && !isRed(node.left)) {
+            node = rotateLeft(node);
+        }
 
         // TODO: Rotate right operation
+        if (isRed(node.left) && isRed(node.left.left)) {
+            node = rotateRight(node);
+        }
 
         // TODO: Color flip
+        if (isRed(node.left) && isRed(node.right)) {
+            flipColors(node);
+        }
 
-        return null; //fix this return statement
+        return node;
     }
 
 }
